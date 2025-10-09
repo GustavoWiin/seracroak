@@ -44,33 +44,34 @@ export default function Quiz() {
           <div className="iconWrap" aria-hidden="true">
             <div className="iconCircle">
               <svg
-                width="48"
-                height="48"
+                width="64"
+                height="64"
                 viewBox="0 0 24 24"
                 role="img"
                 aria-label="Protegido"
               >
-                {/* Apenas melhorias visuais no ícone */}
                 <defs>
-                  <filter id="checkShadow" x="-50%" y="-50%" width="200%" height="200%">
-                    <feDropShadow dx="0" dy="0.5" stdDeviation="0.6" floodOpacity="0.45" />
+                  <radialGradient id="shieldGrad" cx="50%" cy="30%" r="70%">
+                    <stop offset="0%" stopColor="#4c82ff" stopOpacity="0.9" />
+                    <stop offset="100%" stopColor="#1a4bff" stopOpacity="0.95" />
+                  </radialGradient>
+                  <filter id="shieldGlow" x="-30%" y="-30%" width="160%" height="160%">
+                    <feDropShadow dx="0" dy="1" stdDeviation="1.6" floodColor="#1a4bff" floodOpacity="0.6" />
                   </filter>
                 </defs>
+                {/* Escudo mais visível */}
                 <path
                   d="M12 3l7 3v6c0 4.418-3.582 8-7 8s-7-3.582-7-8V6l7-3z"
-                  fill="#eaf2ff"
+                  fill="url(#shieldGrad)"
+                  filter="url(#shieldGlow)"
                 />
+                {/* Sinal correto */}
                 <path
                   d="M10.6 13.4l-2.1-2.1 1.1-1.1 1 1 3.9-3.9 1.1 1.1-5 5z"
-                  fill="#2a66ff"
-                  stroke="#14367f"
-                  strokeWidth="0.8"
-                  strokeLinejoin="round"
-                  filter="url(#checkShadow)"
-                />
-                <path
-                  d="M12 3l7 3v6c0 4.418-3.582 8-7 8V3z"
-                  fill="rgba(42,102,255,.08)"
+                  fill="#ffffff"
+                  stroke="#ffffff"
+                  strokeWidth="0.4"
+                  filter="url(#shieldGlow)"
                 />
               </svg>
             </div>
@@ -97,7 +98,6 @@ export default function Quiz() {
         </section>
       </main>
 
-      {/* Cookie banner (visual como no print) */}
       {cookiesOpen && (
         <div className="cookieBar" role="region" aria-label="cookies">
           <span>Usamos cookies para melhorar sua experiência.</span>
@@ -111,7 +111,6 @@ export default function Quiz() {
         </div>
       )}
 
-      {/* Modal (lógica inalterada) */}
       {modalOpen && (
         <div
           id="modal-root"
@@ -182,7 +181,6 @@ export default function Quiz() {
         </div>
       )}
 
-      {/* GLOBAL RESET — evita flashes brancos nas bordas */}
       <style jsx global>{`
         html,
         body,
@@ -190,7 +188,7 @@ export default function Quiz() {
           height: 100%;
         }
         * {
-          box-sizing: border-box.
+          box-sizing: border-box;
         }
         body {
           margin: 0;
@@ -307,7 +305,6 @@ export default function Quiz() {
           color: #9aa7bd;
         }
 
-        /* Cookie bar */
         .cookieBar {
           position: fixed;
           left: 50%;
@@ -336,7 +333,6 @@ export default function Quiz() {
           font-weight: 800;
         }
 
-        /* Modal (mantido) */
         .backdrop {
           position: fixed;
           inset: 0;
