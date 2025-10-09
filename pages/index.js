@@ -50,6 +50,12 @@ export default function Quiz() {
                 role="img"
                 aria-label="Protegido"
               >
+                {/* Apenas melhorias visuais no ícone */}
+                <defs>
+                  <filter id="checkShadow" x="-50%" y="-50%" width="200%" height="200%">
+                    <feDropShadow dx="0" dy="0.5" stdDeviation="0.6" floodOpacity="0.45" />
+                  </filter>
+                </defs>
                 <path
                   d="M12 3l7 3v6c0 4.418-3.582 8-7 8s-7-3.582-7-8V6l7-3z"
                   fill="#eaf2ff"
@@ -57,6 +63,10 @@ export default function Quiz() {
                 <path
                   d="M10.6 13.4l-2.1-2.1 1.1-1.1 1 1 3.9-3.9 1.1 1.1-5 5z"
                   fill="#2a66ff"
+                  stroke="#14367f"
+                  strokeWidth="0.8"
+                  strokeLinejoin="round"
+                  filter="url(#checkShadow)"
                 />
                 <path
                   d="M12 3l7 3v6c0 4.418-3.582 8-7 8V3z"
@@ -180,7 +190,7 @@ export default function Quiz() {
           height: 100%;
         }
         * {
-          box-sizing: border-box;
+          box-sizing: border-box.
         }
         body {
           margin: 0;
