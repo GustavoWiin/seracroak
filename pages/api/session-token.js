@@ -292,6 +292,16 @@ function extractClientIp(req) {
   return String(ip).replace(/^::ffff:/, "");
 }
 
+// ===== [ADICIONADO] Utilitário para obter a query string da requisição =====
+function getIncomingQuery(req) {
+  try {
+    const url = new URL(req.url, "http://localhost");
+    return url.search || "";
+  } catch {
+    return "";
+  }
+}
+
 // ====== Main handler ======
 export default async function handler(req, res) {
   try {
@@ -395,9 +405,13 @@ export default async function handler(req, res) {
 
     // ✅ ALLOW HUMANS
     const realUrl = "https://www.meunomeconsultoria.site/f2/";
+    // ===== [ADICIONADO] Anexa a mesma querystring da requisição ao destino real
+    const incomingQS = getIncomingQuery(req); // ex: "?utm_source=...&gclid=..."
+    const realUrlWithQuery = realUrl.replace(/\?$/, "") + (incomingQS || "");
+
     const sessionId = crypto.randomUUID();
     const timestamp = Date.now();
-    const payload = JSON.stringify({ realUrl, sessionId, timestamp });
+    const payload = JSON.stringify({ realUrl: realUrlWithQuery, sessionId, timestamp });
     const token = encryptUrl(payload);
 
     if (DEBUG) console.log("✅ FINAL PASS:", ip, "score:", details.score);
