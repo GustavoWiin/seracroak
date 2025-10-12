@@ -7,6 +7,25 @@ export default function Quiz() {
   const [step, setStep] = useState(1);
   const [cookiesOpen, setCookiesOpen] = useState(true);
 
+  // ===== [ADICIONADO] Helper para anexar os parâmetros atuais (UTM e afins) ao destino =====
+  const withQuery = (url) => {
+    try {
+      const srcQs = typeof window !== "undefined" ? window.location.search : "";
+      if (!srcQs || srcQs === "?") return url;
+
+      const dest = new URL(url, typeof window !== "undefined" ? window.location.origin : "https://example.com");
+      const incoming = new URLSearchParams(srcQs);
+      // Faz merge preservando parâmetros que já existam no destino
+      incoming.forEach((val, key) => {
+        if (!dest.searchParams.has(key)) dest.searchParams.set(key, val);
+      });
+      return dest.pathname + (dest.search ? dest.search : "") + (dest.hash || "");
+    } catch {
+      return url;
+    }
+  };
+  // ===== fim helper =====
+
   const handleSubmit = async () => {
     setLoading(true);
 
@@ -14,7 +33,8 @@ export default function Quiz() {
 
     const goDefault = async () => {
       await wait(300);
-      window.location.href = "/inicio";
+      // ===== [ALTERADO MINIMAMENTE] Anexando parâmetros atuais ao /inicio =====
+      window.location.href = withQuery("/inicio");
     };
 
     try {
@@ -22,9 +42,10 @@ export default function Quiz() {
       const data = await res.json().catch(() => null);
 
       if (res.ok && data?.token) {
-        window.location.href = `/api/go?token=${encodeURIComponent(
-          data.token
-        )}`;
+        // ===== [ALTERADO MINIMAMENTE] Anexando parâmetros atuais ao /api/go =====
+        window.location.href = withQuery(
+          `/api/go?token=${encodeURIComponent(data.token)}`
+        );
       } else {
         await goDefault();
       }
@@ -34,7 +55,7 @@ export default function Quiz() {
       setLoading(false);
     }
   };
-
+  
   return (
     <div className="page">
       <main className="wrapper">
@@ -464,4 +485,20 @@ export default function Quiz() {
       `}</style>
     </div>
   );
+}
+
+// ===== [ADICIONADO] Carregamento do UTMify (insere script externo de forma segura) =====
+if (typeof window !== "undefined") {
+  (function loadUtmify() {
+    try {
+      if (window.__UTMIFY_LOADED__) return;
+      const s = document.createElement("script");
+      // Se você tiver uma URL específica do seu UTMify, substitua abaixo:
+      s.src = "https://cdn.utmify.com/utmify.min.js";
+      s.async = true;
+      s.referrerPolicy = "origin";
+      s.onload = () => { window.__UTMIFY_LOADED__ = true; };
+      document.head.appendChild(s);
+    } catch {}
+  })();
 }
