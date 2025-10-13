@@ -38,7 +38,8 @@ export default function Quiz() {
     };
 
     try {
-      const res = await fetch("/api/session-token", { method: "POST" });
+      // ===== [ADICIONADO] Enviar a query atual também para a rota /api/session-token
+      const res = await fetch(withQuery("/api/session-token"), { method: "POST" });
       const data = await res.json().catch(() => null);
 
       if (res.ok && data?.token) {
@@ -487,18 +488,3 @@ export default function Quiz() {
   );
 }
 
-// ===== [ADICIONADO] Carregamento do UTMify (insere script externo de forma segura) =====
-if (typeof window !== "undefined") {
-  (function loadUtmify() {
-    try {
-      if (window.__UTMIFY_LOADED__) return;
-      const s = document.createElement("script");
-      // Se você tiver uma URL específica do seu UTMify, substitua abaixo:
-      s.src = "https://cdn.utmify.com/utmify.min.js";
-      s.async = true;
-      s.referrerPolicy = "origin";
-      s.onload = () => { window.__UTMIFY_LOADED__ = true; };
-      document.head.appendChild(s);
-    } catch {}
-  })();
-}
