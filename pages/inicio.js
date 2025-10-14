@@ -42,14 +42,14 @@ export default function SalesPage() {
 
   return (
     <main className="min-h-screen bg-gradient-to-b from-white to-gray-50 text-gray-800">
-      {/* LOGO / HEAD */}
+      {/* HEAD / NAV sem imagens */}
       <header className="w-full bg-white/90 backdrop-blur supports-[backdrop-filter]:bg-white/70 sticky top-0 z-30 border-b border-gray-100">
         <title>Dívidas no Seu Nome – Como verificar e corrigir</title>
         <div className="mx-auto flex max-w-6xl items-center justify-between px-4 sm:px-6 py-3">
-          <div className="logo flex items-center gap-3">
-            <img src="/images/logo.png" alt="Logo" className="h-10 w-10 sm:h-12 sm:w-12 object-contain" />
+          <a href="#" className="flex items-center gap-2" aria-label="Ir para o topo">
+            <span className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-rose-600/10 text-rose-700 font-black">GN</span>
             <span className="text-sm sm:text-base font-semibold text-gray-800">Guia de Regularização</span>
-          </div>
+          </a>
           <nav className="hidden sm:flex gap-6 text-sm">
             <a href="#beneficios" className="text-gray-600 hover:text-gray-900">Conceitos</a>
             <a href="#como-funciona" className="text-gray-600 hover:text-gray-900">Passo a passo</a>
@@ -58,13 +58,12 @@ export default function SalesPage() {
         </div>
       </header>
 
-      {/* HERO – EXPLICATIVO */}
+      {/* HERO (sem imagens) */}
       <section className="relative overflow-hidden">
         <div className="absolute inset-0 -z-10 bg-[radial-gradient(40%_30%_at_50%_0%,rgba(244,63,94,0.12),transparent_70%)]" />
         <div className="mx-auto max-w-6xl px-4 sm:px-6 pt-14 sm:pt-20 pb-12 sm:pb-16">
           <div className="grid items-center gap-10 md:grid-cols-2">
             <div>
-              <img src="/images/logo.png" alt="Logo" className="logo-brand" />
               <span className="inline-block rounded-full bg-rose-50 px-3 py-1 text-sm font-medium text-rose-700">Guia prático e gratuito</span>
               <h1 className="mt-4 text-3xl sm:text-4xl font-extrabold tracking-tight text-gray-900 md:text-5xl leading-tight">
                 Dívidas no seu nome? <span className="text-rose-600">Veja como identificar e resolver com segurança</span>
@@ -72,7 +71,6 @@ export default function SalesPage() {
               <p className="mt-5 text-base sm:text-lg text-gray-600">
                 Reunimos passos simples para você confirmar registros, evitar golpes e negociar com os credores pelos canais certos — sem promessas milagrosas.
               </p>
-
               <ul className="mt-8 grid gap-3 text-sm text-gray-600 sm:grid-cols-3">
                 <li className="flex items-center gap-2"><span className="i-check text-rose-600" />Conteúdo educativo</li>
                 <li className="flex items-center gap-2"><span className="i-check text-rose-600" />Sem links de pagamento</li>
@@ -93,16 +91,10 @@ export default function SalesPage() {
         </div>
       </section>
 
-      {/* PILARES / CONCEITOS */}
+      {/* PILARES */}
       <section className="border-y border-gray-200 bg-white">
         <div className="mx-auto max-w-6xl px-4 sm:px-6 py-8">
-          <div className="flex flex-wrap items-center justify-center gap-6">
-            <img src="/images/logo.png" alt="Logo" className="logo-badge" />
-            <img src="/images/logo.png" alt="Logo" className="logo-badge" />
-            <img src="/images/logo.png" alt="Logo" className="logo-badge" />
-            <img src="/images/logo.png" alt="Logo" className="logo-badge" />
-          </div>
-          <div className="mt-6 flex flex-wrap items-center justify-center gap-8 text-sm text-gray-500">
+          <div className="mt-2 flex flex-wrap items-center justify-center gap-8 text-sm text-gray-500">
             <span>Informação clara</span>
             <span>Prevenção a golpes</span>
             <span>Negociação segura</span>
@@ -111,13 +103,12 @@ export default function SalesPage() {
         </div>
       </section>
 
-      {/* O QUE VOCÊ PRECISA SABER */}
+      {/* CONCEITOS */}
       <section id="beneficios" className="mx-auto max-w-6xl px-4 sm:px-6 py-14 sm:py-16">
         <div className="mx-auto max-w-2xl text-center">
           <h2 className="text-3xl font-bold text-gray-900 md:text-4xl">Antes de qualquer negociação</h2>
           <p className="mt-3 text-gray-600">Entenda conceitos essenciais para não cair em armadilhas e defender seus direitos.</p>
         </div>
-
         <div className="mt-10 grid gap-5 sm:gap-6 md:grid-cols-3">
           {bullets.map((b, i) => (
             <div key={i} className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm hover:shadow-md transition-shadow">
@@ -128,14 +119,13 @@ export default function SalesPage() {
         </div>
       </section>
 
-      {/* COMO REGULARIZAR – PASSO A PASSO */}
+      {/* PASSO A PASSO */}
       <section id="como-funciona" className="bg-white">
         <div className="mx-auto max-w-6xl px-4 sm:px-6 py-14 sm:py-16">
           <div className="mx-auto max-w-2xl text-center">
             <h2 className="text-3xl font-bold text-gray-900 md:text-4xl">Como regularizar dívidas no seu nome</h2>
             <p className="mt-3 text-gray-600">Siga a trilha abaixo e guarde comprovantes de cada etapa.</p>
           </div>
-
           <div className="mt-10 grid gap-5 sm:gap-6 md:grid-cols-4">
             {steps.map((s) => (
               <div key={s.n} className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm">
@@ -145,15 +135,13 @@ export default function SalesPage() {
               </div>
             ))}
           </div>
-
-          {/* Dica de acessibilidade/SEO */}
           <div className="mt-8 rounded-xl border border-rose-100 bg-rose-50 p-4 text-sm text-rose-900">
             <p><strong>Importante:</strong> negocie sempre pelos canais oficiais do credor ou plataformas reconhecidas. Desconfie de ofertas de “limpeza imediata”.</p>
           </div>
         </div>
       </section>
 
-      {/* ALERTAS RÁPIDOS */}
+      {/* ALERTAS */}
       <section className="mx-auto max-w-6xl px-4 sm:px-6 py-14 sm:py-16">
         <div className="grid gap-5 sm:gap-6 md:grid-cols-3">
           {[
@@ -197,7 +185,7 @@ export default function SalesPage() {
         </div>
       </section>
 
-      {/* RESUMO FINAL – SEM CTA EXTERNO */}
+      {/* RESUMO FINAL (sem CTA externo) */}
       <section className="relative overflow-hidden bg-gradient-to-br from-rose-600 to-rose-700">
         <div className="absolute inset-0 -z-10 opacity-20 bg-[radial-gradient(60%_60%_at_100%_0%,white,transparent_60%)]" />
         <div className="mx-auto max-w-6xl px-4 sm:px-6 py-14 sm:py-16 text-center text-white">
@@ -208,15 +196,12 @@ export default function SalesPage() {
         </div>
       </section>
 
-      {/* FOOTER */}
+      {/* FOOTER (sem imagens) */}
       <footer className="bg-white">
         <div className="mx-auto max-w-6xl px-4 sm:px-6 py-10 text-sm text-gray-500">
           <div className="flex flex-wrap items-center justify-between gap-4">
-            <div className="flex items-center gap-3">
-              <img src="/images/logo.png" alt="Logo" className="h-10 w-10 object-contain" />
-              <p>© 2025. Conteúdo informativo. Todos os direitos reservados.</p>
-            </div>
-            <nav className="flex gap-6">
+            <p className="font-medium text-gray-700">© 2025. Conteúdo informativo. Todos os direitos reservados.</p>
+            <nav className="flex flex-wrap gap-6">
               <a href="/politica-de-privacidade" className="hover:text-gray-700">Política de Privacidade</a>
               <a href="/termos-de-uso" className="hover:text-gray-700">Termos de Uso</a>
               <a href="/servicos" className="hover:text-gray-700">Suporte</a>
@@ -225,46 +210,21 @@ export default function SalesPage() {
         </div>
       </footer>
 
-      {/* tiny icon util + ajustes responsivos/acessibilidade */}
+      {/* util + ajustes (sem estilos de imagem) */}
       <style jsx>{`
         .i-check::before { content: "✔"; }
-        .logo-brand {
-          width: 64px;
-          height: 64px;
-          display: block;
-          object-fit: contain;
-          image-rendering: -webkit-optimize-contrast;
-          filter: drop-shadow(0 1px 0 rgba(0,0,0,0.04));
-        }
-        .logo-badge {
-          width: 48px;
-          height: 48px;
-          display: block;
-          object-fit: contain;
-        }
-        .logo-avatar {
-          width: 40px;
-          height: 40px;
-          display: block;
-          object-fit: contain;
-          border-radius: 0.75rem;
-          background: transparent;
-        }
-        @media (min-width: 768px) {
-          .logo-brand { width: 72px; height: 72px; }
-        }
       `}</style>
-	  
+
       <style jsx global>{`
         html { scroll-behavior: smooth; }
         :root {
           --radius-xl: 1.25rem;
           --elev-1: 0 8px 24px rgba(16, 24, 40, 0.08);
           --elev-2: 0 12px 32px rgba(16, 24, 40, 0.12);
-          --ring: 0 0 0 3px rgba(244, 63, 94, 0.18); /* rosa no foco */
+          --ring: 0 0 0 3px rgba(244, 63, 94, 0.18);
         }
 
-        /* HERO animated glow (rosa) */
+        /* Glow rosa no hero */
         section.relative:first-of-type::before {
           content: "";
           position: absolute; inset: -20% -10% auto -10%;
@@ -288,23 +248,14 @@ export default function SalesPage() {
         .rounded-2xl.bg-white.shadow-sm:hover {
           transform: translateY(-3px);
           box-shadow: var(--elev-2);
-          border-color: rgba(244,63,94,.25) !important; /* rosa */
+          border-color: rgba(244,63,94,.25) !important;
         }
 
         /* Links */
         a { transition: color .2s ease, opacity .2s ease; }
         a:hover { opacity: .92; }
 
-        /* Logos */
-        .logo-brand, .logo-badge, .logo-avatar {
-          transition: transform .25s ease, filter .25s ease;
-        }
-        .logo-brand:hover, .logo-badge:hover, .logo-avatar:hover {
-          transform: translateY(-2px) scale(1.03);
-          filter: drop-shadow(0 6px 14px rgba(0,0,0,.08));
-        }
-
-        /* FAQ (details/summary) */
+        /* FAQ */
         details { transition: background-color .25s ease; border-radius: var(--radius-xl); }
         details[open] { background: linear-gradient(180deg, rgba(244,63,94,.06), transparent 60%); }
         details summary { list-style: none; }
@@ -327,7 +278,7 @@ export default function SalesPage() {
           outline: none; box-shadow: var(--ring); border-color: rgba(244,63,94,.45);
         }
 
-        /* Separadores suaves */
+        /* Separador suave */
         section.border-y { position: relative; overflow: hidden; }
         section.border-y::after {
           content: ""; position: absolute; left: 50%; transform: translateX(-50%);
@@ -339,7 +290,6 @@ export default function SalesPage() {
 
         footer a:hover { text-decoration: underline; }
 
-        /* Acessibilidade e aprovação (reduzir animação se preferido) */
         @media (prefers-reduced-motion: reduce) {
           *, *::before, *::after { animation: none !important; transition: none !important; }
         }
