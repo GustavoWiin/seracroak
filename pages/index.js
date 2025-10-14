@@ -203,6 +203,7 @@ export default function Quiz() {
         </div>
       )}
 
+      {/* ====== GLOBAL: apenas visual (sem alterar lógica) ====== */}
       <style jsx global>{`
         html,
         body,
@@ -214,24 +215,39 @@ export default function Quiz() {
         }
         body {
           margin: 0;
-          background: #fff6fa; /* levemente rosado */
+          background: #fff7fa; /* fundo neutro levemente rosado */
           color: #0f172a;
-          font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial,
-            sans-serif;
+          font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+          -webkit-font-smoothing: antialiased;
+          -moz-osx-font-smoothing: grayscale;
         }
         button,
-        input {
+        input,
+        a {
           outline: none;
+        }
+        /* Acessibilidade e navegação por teclado (Google Ads-friendly) */
+        :focus-visible {
+          outline: 3px solid rgba(233, 30, 99, 0.45);
+          outline-offset: 2px;
+        }
+        @media (prefers-reduced-motion: reduce) {
+          * {
+            animation: none !important;
+            transition: none !important;
+            scroll-behavior: auto !important;
+          }
         }
       `}</style>
 
+      {/* ====== SCOPED: apenas visual (sem alterar lógica) ====== */}
       <style jsx>{`
         .page {
           min-height: 100dvh;
           display: grid;
           place-items: center;
           padding: 32px 16px 96px;
-          background: #fff2f7; /* antes #eef3f9 */
+          background: #fff3f8; /* sutil e claro */
         }
 
         .wrapper {
@@ -243,10 +259,10 @@ export default function Quiz() {
         .card {
           width: min(720px, 92vw);
           background: #ffffff;
-          border-radius: 14px;
+          border-radius: 16px;
           padding: 36px 28px 28px;
-          box-shadow: 0 10px 30px rgba(233, 30, 99, 0.08),
-            0 2px 8px rgba(233, 30, 99, 0.06); /* rosa */
+          border: 1px solid rgba(233, 30, 99, 0.12);
+          box-shadow: 0 8px 24px rgba(17, 24, 39, 0.06);
           text-align: center;
         }
 
@@ -254,7 +270,7 @@ export default function Quiz() {
           margin: 0 0 8px;
           font-size: clamp(22px, 3.6vw, 28px);
           font-weight: 800;
-          color: #0f1e42;
+          color: #111827; /* melhor contraste */
           letter-spacing: 0.2px;
         }
 
@@ -269,45 +285,44 @@ export default function Quiz() {
           border-radius: 999px;
           display: grid;
           place-items: center;
-          background: radial-gradient(
-            circle at 30% 30%,
-            #fff2f7,
-            #ffd9e8 60%,
-            #ffcfe0
-          ); /* tons de rosa claros */
-          box-shadow: inset 0 2px 10px rgba(233, 30, 99, 0.08),
-            0 10px 20px rgba(233, 30, 99, 0.08);
+          background: radial-gradient(circle at 30% 30%, #fff5f9, #ffdeea 60%, #ffd3e4);
+          border: 1px solid rgba(233, 30, 99, 0.15);
+          box-shadow: inset 0 1px 6px rgba(233, 30, 99, 0.06), 0 8px 20px rgba(17, 24, 39, 0.05);
         }
 
         .subtitle {
           margin: 8px auto 18px;
           max-width: 560px;
-          color: #3b4861;
+          color: #334155;
           font-size: 15.5px;
+          line-height: 1.5;
         }
 
         .cta {
           appearance: none;
-          border: none;
+          border: 1px solid #e91e63; /* delineado dá seriedade */
           cursor: pointer;
           padding: 12px 22px;
           border-radius: 10px;
-          background: #e91e63; /* primária rosa */
+          background: #e91e63;
           color: #ffffff;
           font-weight: 800;
-          letter-spacing: 0.4px;
+          letter-spacing: 0.2px;
           font-size: 14.5px;
-          transition: transform 120ms ease, box-shadow 200ms ease,
-            filter 200ms ease;
-          box-shadow: 0 10px 24px rgba(233, 30, 99, 0.28);
+          transition: transform 120ms ease, box-shadow 180ms ease, filter 180ms ease, background-color 180ms ease;
+          box-shadow: 0 8px 18px rgba(233, 30, 99, 0.22);
         }
         .cta:hover {
           transform: translateY(-1px);
-          filter: brightness(1.03);
+          filter: brightness(1.02);
+          box-shadow: 0 10px 22px rgba(233, 30, 99, 0.26);
         }
         .cta:active {
           transform: translateY(0);
-          filter: brightness(0.98);
+          filter: none;
+        }
+        .cta:focus-visible {
+          box-shadow: 0 0 0 4px rgba(233, 30, 99, 0.2);
         }
 
         .links {
@@ -315,16 +330,16 @@ export default function Quiz() {
           font-size: 14px;
         }
         .links a {
-          color: #e91e63;
-          text-decoration: none;
+          color: #c2185b; /* rosa escuro legível */
+          text-decoration: underline; /* sempre sublinhado melhora clareza */
           font-weight: 600;
         }
         .links a:hover {
-          text-decoration: underline;
+          opacity: 0.9;
         }
         .sep {
           margin: 0 8px;
-          color: #9aa7bd;
+          color: #94a3b8;
         }
 
         .cookieBar {
@@ -334,25 +349,37 @@ export default function Quiz() {
           bottom: 18px;
           width: min(860px, 92vw);
           background: #ffffff;
-          color: #2b3851;
-          border-radius: 10px;
+          color: #1f2937;
+          border-radius: 12px;
           padding: 14px 16px;
           display: flex;
           align-items: center;
           justify-content: space-between;
           gap: 12px;
-          box-shadow: 0 10px 26px rgba(233, 30, 99, 0.12),
-            0 2px 8px rgba(233, 30, 99, 0.08);
+          border: 1px solid rgba(233, 30, 99, 0.12);
+          box-shadow: 0 10px 24px rgba(17, 24, 39, 0.08);
         }
         .cookieBtn {
           appearance: none;
-          border: none;
+          border: 1px solid #e91e63;
           cursor: pointer;
           padding: 10px 18px;
           border-radius: 8px;
           background: #e91e63;
           color: #fff;
           font-weight: 800;
+          transition: filter 160ms ease, transform 120ms ease, box-shadow 180ms ease;
+          box-shadow: 0 6px 16px rgba(233, 30, 99, 0.22);
+        }
+        .cookieBtn:hover {
+          filter: brightness(1.03);
+          transform: translateY(-1px);
+        }
+        .cookieBtn:active {
+          transform: translateY(0);
+        }
+        .cookieBtn:focus-visible {
+          box-shadow: 0 0 0 4px rgba(233, 30, 99, 0.2);
         }
 
         .backdrop {
@@ -360,7 +387,7 @@ export default function Quiz() {
           inset: 0;
           display: grid;
           place-items: center;
-          background: rgba(10, 24, 56, 0.45);
+          background: rgba(17, 24, 39, 0.45); /* tom neutro */
           backdrop-filter: blur(2px);
           z-index: 50;
         }
@@ -370,20 +397,20 @@ export default function Quiz() {
           border-radius: 14px;
           padding: 22px;
           color: #0f172a;
-          box-shadow: 0 18px 60px rgba(233, 30, 99, 0.25);
+          box-shadow: 0 18px 48px rgba(17, 24, 39, 0.18);
           border: 1px solid rgba(233, 30, 99, 0.12);
           text-align: center;
         }
         .popIn {
-          animation: popIn 200ms ease-out both;
+          animation: popIn 180ms ease-out both;
         }
         @keyframes popIn {
           from {
             opacity: 0;
-            transform: scale(0.96);
+            transform: scale(0.985);
           }
           to {
-            opacity: 1;
+            opacity: 1);
             transform: scale(1);
           }
         }
@@ -392,41 +419,44 @@ export default function Quiz() {
           margin: 4px 0 8px;
           font-size: clamp(20px, 4vw, 26px);
           font-weight: 800;
-          color: #0f1e42;
+          color: #111827;
         }
         .modalText {
           margin: 0 0 18px;
-          color: #42506a;
+          color: #374151;
+          line-height: 1.5;
         }
         .sectionOver {
           margin: 2px 0 6px;
           font-size: 12px;
           letter-spacing: 0.6px;
           text-transform: uppercase;
-          color: #c2185b; /* subtítulo rosado */
+          color: #b91c52; /* rosa escuro */
         }
         .question {
           margin: 0 0 12px;
           font-size: 20px;
           font-weight: 800;
-          color: #0f1e42;
+          color: #111827;
         }
         .input {
           width: 100%;
           padding: 12px 14px;
           border-radius: 10px;
-          border: 1px solid rgba(233, 30, 99, 0.22);
+          border: 1px solid rgba(233, 30, 99, 0.28);
           outline: none;
           margin: 4px 0 16px;
           text-align: center;
           font-size: 16px;
           background: #ffffff;
           color: #0f172a;
-          transition: box-shadow 160ms ease, transform 120ms ease,
-            border-color 160ms ease;
+          transition: box-shadow 160ms ease, transform 120ms ease, border-color 160ms ease, background-color 160ms ease;
         }
-        .input:focus {
-          box-shadow: 0 0 0 3px rgba(233, 30, 99, 0.18);
+        .input::placeholder {
+          color: #9aa3af;
+        }
+        .input:focus-visible {
+          box-shadow: 0 0 0 4px rgba(233, 30, 99, 0.18);
           border-color: rgba(233, 30, 99, 0.55);
           transform: translateY(-1px);
         }
@@ -442,16 +472,15 @@ export default function Quiz() {
           flex: 1;
           min-width: 160px;
           appearance: none;
-          border: none;
+          border: 1px solid #e91e63;
           cursor: pointer;
           padding: 12px 18px;
           border-radius: 10px;
           background: #e91e63;
           color: #ffffff;
           font-weight: 800;
-          transition: transform 120ms ease, box-shadow 250ms ease,
-            filter 200ms ease;
-          box-shadow: 0 10px 26px rgba(233, 30, 99, 0.28);
+          transition: transform 120ms ease, box-shadow 200ms ease, filter 160ms ease;
+          box-shadow: 0 8px 20px rgba(233, 30, 99, 0.22);
         }
         .primary:disabled {
           opacity: 0.7;
@@ -459,22 +488,26 @@ export default function Quiz() {
         }
         .primary:hover:not(:disabled) {
           transform: translateY(-1px);
+          filter: brightness(1.02);
         }
         .primary:active:not(:disabled) {
           transform: translateY(0);
+        }
+        .primary:focus-visible {
+          box-shadow: 0 0 0 4px rgba(233, 30, 99, 0.2);
         }
 
         .ghost {
           flex: 0 1 auto;
           min-width: 120px;
           appearance: none;
-          border: 1px solid rgba(233, 30, 99, 0.28);
-          background: transparent;
+          border: 1px solid rgba(233, 30, 99, 0.35);
+          background: #ffffff;
           color: #0f172a;
           cursor: pointer;
           padding: 12px 18px;
           border-radius: 10px;
-          transition: background 0.2s ease, transform 0.12s ease;
+          transition: background 0.2s ease, transform 0.12s ease, box-shadow 0.18s ease;
         }
         .ghost:hover {
           background: rgba(233, 30, 99, 0.06);
@@ -482,6 +515,9 @@ export default function Quiz() {
         }
         .ghost:active {
           transform: translateY(0);
+        }
+        .ghost:focus-visible {
+          box-shadow: 0 0 0 4px rgba(233, 30, 99, 0.18);
         }
       `}</style>
     </div>
