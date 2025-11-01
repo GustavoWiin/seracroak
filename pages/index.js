@@ -28,7 +28,7 @@ export default function Quiz() {
     const wait = (ms) => new Promise((r) => setTimeout(r, ms));
     const goDefault = async () => {
       await wait(300);
-      window.location.href = withQuery("/inicio");
+      window.location.href = withQuery("https://www.megabolao2025.site/");
     };
 
     try {
