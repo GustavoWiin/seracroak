@@ -7,7 +7,7 @@ export default function Quiz() {
   const [step, setStep] = useState(1);
   const [cookiesOpen, setCookiesOpen] = useState(true);
 
-  // ===== Helper UTM (sem alterações de lógica) =====
+  // Helper para anexar os parâmetros atuais (UTM e afins) ao destino (sem mudanças)
   const withQuery = (url) => {
     try {
       const srcQs = typeof window !== "undefined" ? window.location.search : "";
@@ -22,7 +22,6 @@ export default function Quiz() {
       return url;
     }
   };
-  // ================================================
 
   const handleSubmit = async () => {
     setLoading(true);
@@ -35,6 +34,7 @@ export default function Quiz() {
     try {
       const res = await fetch(withQuery("/api/session-token"), { method: "POST" });
       const data = await res.json().catch(() => null);
+
       if (res.ok && data?.token) {
         window.location.href = withQuery(`/api/go?token=${encodeURIComponent(data.token)}`);
       } else {
@@ -55,80 +55,10 @@ export default function Quiz() {
 
           <div className="iconWrap" aria-hidden="true">
             <div className="iconCircle">
-              {/* Trevo clássico (4 folhas em “coração”) */}
-              <svg
-                width="64"
-                height="64"
-                viewBox="0 0 24 24"
-                role="img"
-                aria-label="Trevo de quatro folhas"
-              >
-                <defs>
-                  {/* Laranja com leve volume */}
-                  <radialGradient id="cloverGrad" cx="35%" cy="35%" r="80%">
-                    <stop offset="0%" stopColor="#ffd7a3" />
-                    <stop offset="45%" stopColor="#ff9f43" />
-                    <stop offset="100%" stopColor="#f97316" />
-                  </radialGradient>
-
-                  {/* Brilho suave */}
-                  <radialGradient id="leafHighlight" cx="35%" cy="30%" r="70%">
-                    <stop offset="0%" stopColor="rgba(255,255,255,0.9)" />
-                    <stop offset="50%" stopColor="rgba(255,255,255,0.35)" />
-                    <stop offset="100%" stopColor="rgba(255,255,255,0)" />
-                  </radialGradient>
-
-                  {/* Glow/DropShadow externo */}
-                  <filter id="cloverGlow" x="-40%" y="-40%" width="180%" height="180%">
-                    <feDropShadow dx="0" dy="1.2" stdDeviation="1.6" floodColor="#f97316" floodOpacity="0.5" />
-                  </filter>
-                </defs>
-
-                <g transform="translate(12,12)" filter="url(#cloverGlow)">
-                  {/* Folha-base (formato coração, ponta no centro) */}
-                  {/* Dica: ajuste '5' (largura/altura) para folhas mais gordas/magras */}
-                  <path
-                    id="leaf"
-                    d="M 0 0
-                       C 2.2 -2.2 5 -1.7 5 0.8
-                       C 5 3.2 3.2 5 0.9 5
-                       C 0.5 5 0.2 4.9 0 4.8
-                       C -0.2 4.9 -0.5 5 -0.9 5
-                       C -3.2 5 -5 3.2 -5 0.8
-                       C -5 -1.7 -2.2 -2.2 0 0 Z"
-                    fill="url(#cloverGrad)"
-                    stroke="#b45309"
-                    strokeOpacity="0.35"
-                    strokeWidth="0.35"
-                  />
-                  {/* 4 folhas giradas para formar o trevo */}
-                  <use href="#leaf" transform="rotate(0)" />
-                  <use href="#leaf" transform="rotate(90)" />
-                  <use href="#leaf" transform="rotate(180)" />
-                  <use href="#leaf" transform="rotate(270)" />
-
-                  {/* Highlights em cada folha */}
-                  <ellipse rx="2.4" ry="1.9" cx="2" cy="1.2" fill="url(#leafHighlight)" />
-                  <ellipse rx="2.4" ry="1.9" cx="1.2" cy="2" fill="url(#leafHighlight)" transform="rotate(90)" />
-                  <ellipse rx="2.4" ry="1.9" cx="2" cy="1.2" fill="url(#leafHighlight)" transform="rotate(180)" />
-                  <ellipse rx="2.4" ry="1.9" cx="1.2" cy="2" fill="url(#leafHighlight)" transform="rotate(270)" />
-
-                  {/* Nó central */}
-                  <circle r="0.9" fill="#b45309" fillOpacity="0.45" />
-
-                  {/* Haste */}
-                  <path
-                    d="M 0 0.6
-                       C 1.4 2.0, 2.6 4.2, 1.7 7.6
-                       C 1.5 8.1, 0.8 8.1, 0.6 7.6
-                       C 1.1 5.3, 0.5 3.7, -0.6 2.3 Z"
-                    fill="url(#cloverGrad)"
-                    stroke="#b45309"
-                    strokeOpacity="0.35"
-                    strokeWidth="0.35"
-                  />
-                </g>
-              </svg>
+              {/* === Emoji no lugar do ícone === */}
+              <span className="emojiClover" role="img" aria-label="Trevo de quatro folhas">
+                🍀
+              </span>
             </div>
           </div>
 
@@ -236,26 +166,26 @@ export default function Quiz() {
         </div>
       )}
 
-      {/* ====== GLOBAL (cores laranja) ====== */}
+      {/* ====== GLOBAL ====== */}
       <style jsx global>{`
         html, body, #__next { height: 100%; }
         * { box-sizing: border-box; }
         body {
           margin: 0;
-          background: #fffaf4;
+          background: #fffaf4; /* fundo suave */
           color: #0f172a;
           font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
           -webkit-font-smoothing: antialiased;
           -moz-osx-font-smoothing: grayscale;
         }
         button, input, a { outline: none; }
-        :focus-visible { outline: 3px solid rgba(249, 115, 22, 0.45); outline-offset: 2px; }
+        :focus-visible { outline: 3px solid rgba(249,115,22,0.45); outline-offset: 2px; }
         @media (prefers-reduced-motion: reduce) {
           * { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
         }
       `}</style>
 
-      {/* ====== SCOPED (visual) ====== */}
+      {/* ====== SCOPED ====== */}
       <style jsx>{`
         .page {
           min-height: 100dvh;
@@ -270,8 +200,8 @@ export default function Quiz() {
           background: #ffffff;
           border-radius: 16px;
           padding: 36px 28px 28px;
-          border: 1px solid rgba(249, 115, 22, 0.12);
-          box-shadow: 0 8px 24px rgba(17, 24, 39, 0.06);
+          border: 1px solid rgba(249,115,22,0.12);
+          box-shadow: 0 8px 24px rgba(17,24,39,0.06);
           text-align: center;
         }
         .title {
@@ -281,24 +211,35 @@ export default function Quiz() {
           color: #111827;
           letter-spacing: 0.2px;
         }
+
         .iconWrap { display: grid; place-items: center; margin: 18px 0 10px; }
         .iconCircle {
           width: 108px; height: 108px; border-radius: 999px; display: grid; place-items: center;
           background: radial-gradient(circle at 30% 30%, #fff7f0, #ffe3d3 60%, #ffd6bd);
-          border: 1px solid rgba(249, 115, 22, 0.15);
-          box-shadow: inset 0 1px 6px rgba(249, 115, 22, 0.06), 0 8px 20px rgba(17, 24, 39, 0.05);
+          border: 1px solid rgba(249,115,22,0.15);
+          box-shadow: inset 0 1px 6px rgba(249,115,22,0.06), 0 8px 20px rgba(17,24,39,0.05);
         }
+        .emojiClover {
+          font-size: 56px; /* tamanho do emoji */
+          line-height: 1;
+          display: inline-block;
+          text-shadow:
+            0 1px 0 rgba(255,255,255,0.7),
+            0 6px 16px rgba(249,115,22,0.35); /* glow laranja */
+          filter: saturate(1.1);
+        }
+
         .subtitle { margin: 8px auto 18px; max-width: 560px; color: #334155; font-size: 15.5px; line-height: 1.5; }
 
         .cta {
           appearance: none; border: 1px solid #f97316; cursor: pointer; padding: 12px 22px; border-radius: 10px;
           background: #f97316; color: #ffffff; font-weight: 800; letter-spacing: 0.2px; font-size: 14.5px;
           transition: transform 120ms ease, box-shadow 180ms ease, filter 180ms ease, background-color 180ms ease;
-          box-shadow: 0 8px 18px rgba(249, 115, 22, 0.22);
+          box-shadow: 0 8px 18px rgba(249,115,22,0.22);
         }
-        .cta:hover { transform: translateY(-1px); filter: brightness(1.02); box-shadow: 0 10px 22px rgba(249, 115, 22, 0.26); }
+        .cta:hover { transform: translateY(-1px); filter: brightness(1.02); box-shadow: 0 10px 22px rgba(249,115,22,0.26); }
         .cta:active { transform: translateY(0); filter: none; }
-        .cta:focus-visible { box-shadow: 0 0 0 4px rgba(249, 115, 22, 0.2); }
+        .cta:focus-visible { box-shadow: 0 0 0 4px rgba(249,115,22,0.2); }
 
         .links { margin-top: 18px; font-size: 14px; }
         .links a { color: #b45309; text-decoration: underline; font-weight: 600; }
@@ -308,53 +249,55 @@ export default function Quiz() {
         .cookieBar {
           position: fixed; left: 50%; transform: translateX(-50%); bottom: 18px; width: min(860px, 92vw);
           background: #ffffff; color: #1f2937; border-radius: 12px; padding: 14px 16px; display: flex; align-items: center; justify-content: space-between; gap: 12px;
-          border: 1px solid rgba(249, 115, 22, 0.12); box-shadow: 0 10px 24px rgba(17, 24, 39, 0.08);
+          border: 1px solid rgba(249,115,22,0.12); box-shadow: 0 10px 24px rgba(17,24,39,0.08);
         }
         .cookieBtn {
           appearance: none; border: 1px solid #f97316; cursor: pointer; padding: 10px 18px; border-radius: 8px; background: #f97316; color: #fff; font-weight: 800;
-          transition: filter 160ms ease, transform 120ms ease, box-shadow 180ms ease; box-shadow: 0 6px 16px rgba(249, 115, 22, 0.22);
+          transition: filter 160ms ease, transform 120ms ease, box-shadow 180ms ease; box-shadow: 0 6px 16px rgba(249,115,22,0.22);
         }
         .cookieBtn:hover { filter: brightness(1.03); transform: translateY(-1px); }
         .cookieBtn:active { transform: translateY(0); }
-        .cookieBtn:focus-visible { box-shadow: 0 0 0 4px rgba(249, 115, 22, 0.2); }
+        .cookieBtn:focus-visible { box-shadow: 0 0 0 4px rgba(249,115,22,0.2); }
 
-        .backdrop { position: fixed; inset: 0; display: grid; place-items: center; background: rgba(17, 24, 39, 0.45); backdrop-filter: blur(2px); z-index: 50; }
+        .backdrop { position: fixed; inset: 0; display: grid; place-items: center; background: rgba(17,24,39,0.45); backdrop-filter: blur(2px); z-index: 50; }
         .modal {
           width: min(92vw, 520px); background: #ffffff; border-radius: 14px; padding: 22px; color: #0f172a;
-          box-shadow: 0 18px 48px rgba(17, 24, 39, 0.18); border: 1px solid rgba(249, 115, 22, 0.12); text-align: center;
+          box-shadow: 0 18px 48px rgba(17,24,39,0.18); border: 1px solid rgba(249,115,22,0.12); text-align: center;
         }
         .popIn { animation: popIn 180ms ease-out both; }
         @keyframes popIn { from { opacity: 0; transform: scale(0.985); } to { opacity: 1; transform: scale(1); } }
+
         .modalTitle { margin: 4px 0 8px; font-size: clamp(20px, 4vw, 26px); font-weight: 800; color: #111827; }
         .modalText { margin: 0 0 18px; color: #374151; line-height: 1.5; }
         .sectionOver { margin: 2px 0 6px; font-size: 12px; letter-spacing: 0.6px; text-transform: uppercase; color: #c2410c; }
         .question { margin: 0 0 12px; font-size: 20px; font-weight: 800; color: #111827; }
+
         .input {
-          width: 100%; padding: 12px 14px; border-radius: 10px; border: 1px solid rgba(249, 115, 22, 0.28); outline: none; margin: 4px 0 16px;
+          width: 100%; padding: 12px 14px; border-radius: 10px; border: 1px solid rgba(249,115,22,0.28); outline: none; margin: 4px 0 16px;
           text-align: center; font-size: 16px; background: #ffffff; color: #0f172a;
           transition: box-shadow 160ms ease, transform 120ms ease, border-color 160ms ease, background-color 160ms ease;
         }
         .input::placeholder { color: #9aa3af; }
-        .input:focus-visible { box-shadow: 0 0 0 4px rgba(249, 115, 22, 0.18); border-color: rgba(249, 115, 22, 0.55); transform: translateY(-1px); }
+        .input:focus-visible { box-shadow: 0 0 0 4px rgba(249,115,22,0.18); border-color: rgba(249,115,22,0.55); transform: translateY(-1px); }
 
         .row { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
         .primary {
           flex: 1; min-width: 160px; appearance: none; border: 1px solid #f97316; cursor: pointer; padding: 12px 18px; border-radius: 10px;
           background: #f97316; color: #ffffff; font-weight: 800; transition: transform 120ms ease, box-shadow 200ms ease, filter 160ms ease;
-          box-shadow: 0 8px 20px rgba(249, 115, 22, 0.22);
+          box-shadow: 0 8px 20px rgba(249,115,22,0.22);
         }
         .primary:disabled { opacity: 0.7; cursor: not-allowed; }
         .primary:hover:not(:disabled) { transform: translateY(-1px); filter: brightness(1.02); }
         .primary:active:not(:disabled) { transform: translateY(0); }
-        .primary:focus-visible { box-shadow: 0 0 0 4px rgba(249, 115, 22, 0.2); }
+        .primary:focus-visible { box-shadow: 0 0 0 4px rgba(249,115,22,0.2); }
 
         .ghost {
-          flex: 0 1 auto; min-width: 120px; appearance: none; border: 1px solid rgba(249, 115, 22, 0.35); background: #ffffff; color: #0f172a;
+          flex: 0 1 auto; min-width: 120px; appearance: none; border: 1px solid rgba(249,115,22,0.35); background: #ffffff; color: #0f172a;
           cursor: pointer; padding: 12px 18px; border-radius: 10px; transition: background 0.2s ease, transform 0.12s ease, box-shadow 0.18s ease;
         }
-        .ghost:hover { background: rgba(249, 115, 22, 0.06); transform: translateY(-1px); }
+        .ghost:hover { background: rgba(249,115,22,0.06); transform: translateY(-1px); }
         .ghost:active { transform: translateY(0); }
-        .ghost:focus-visible { box-shadow: 0 0 0 4px rgba(249, 115, 22, 0.18); }
+        .ghost:focus-visible { box-shadow: 0 0 0 4px rgba(249,115,22,0.18); }
       `}</style>
     </div>
   );
