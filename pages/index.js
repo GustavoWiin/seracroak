@@ -62,7 +62,7 @@ export default function Quiz() {
           </div>
 
           <p className="subtitle">
-            Você pode estar apto à negociação. Clique abaixo para participar
+            Adquira já sua participação para o Bolão
           </p>
 
           <button
