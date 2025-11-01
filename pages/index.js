@@ -7,7 +7,6 @@ export default function Quiz() {
   const [step, setStep] = useState(1);
   const [cookiesOpen, setCookiesOpen] = useState(true);
 
-  // ===== [ADICIONADO] Helper para anexar os parâmetros atuais (UTM e afins) ao destino =====
   const withQuery = (url) => {
     try {
       const srcQs = typeof window !== "undefined" ? window.location.search : "";
@@ -15,7 +14,6 @@ export default function Quiz() {
 
       const dest = new URL(url, typeof window !== "undefined" ? window.location.origin : "https://example.com");
       const incoming = new URLSearchParams(srcQs);
-      // Faz merge preservando parâmetros que já existam no destino
       incoming.forEach((val, key) => {
         if (!dest.searchParams.has(key)) dest.searchParams.set(key, val);
       });
@@ -24,7 +22,6 @@ export default function Quiz() {
       return url;
     }
   };
-  // ===== fim helper =====
 
   const handleSubmit = async () => {
     setLoading(true);
@@ -67,37 +64,30 @@ export default function Quiz() {
                 height="64"
                 viewBox="0 0 24 24"
                 role="img"
-                aria-label="Protegido"
+                aria-label="Trevo da sorte"
               >
                 <defs>
-                  <radialGradient id="shieldGrad" cx="50%" cy="30%" r="70%">
+                  <radialGradient id="cloverGrad" cx="50%" cy="30%" r="70%">
                     <stop offset="0%" stopColor="#ff9f43" stopOpacity="0.95" />
                     <stop offset="100%" stopColor="#f97316" stopOpacity="0.98" />
                   </radialGradient>
-                  <filter id="shieldGlow" x="-30%" y="-30%" width="160%" height="160%">
+                  <filter id="cloverGlow" x="-30%" y="-30%" width="160%" height="160%">
                     <feDropShadow dx="0" dy="1" stdDeviation="1.6" floodColor="#f97316" floodOpacity="0.6" />
                   </filter>
                 </defs>
-                {/* Escudo com tema laranja */}
+
+                {/* Trevo de quatro folhas */}
                 <path
-                  d="M12 3l7 3v6c0 4.418-3.582 8-7 8s-7-3.582-7-8V6l7-3z"
-                  fill="url(#shieldGrad)"
-                  filter="url(#shieldGlow)"
-                />
-                {/* Sinal correto */}
-                <path
-                  d="M10.6 13.4l-2.1-2.1 1.1-1.1 1 1 3.9-3.9 1.1 1.1-5 5z"
-                  fill="#ffffff"
-                  stroke="#ffffff"
-                  strokeWidth="0.4"
-                  filter="url(#shieldGlow)"
+                  d="M12 2c1.933 0 3.5 1.567 3.5 3.5S13.933 9 12 9s-3.5-1.567-3.5-3.5S10.067 2 12 2zm0 5c1.381 0 2.5-1.119 2.5-2.5S13.381 2 12 2s-2.5 1.119-2.5 2.5S10.619 7 12 7zm5 3c1.933 0 3.5 1.567 3.5 3.5S18.933 17 17 17s-3.5-1.567-3.5-3.5S15.067 10 17 10zm0 5c1.381 0 2.5-1.119 2.5-2.5S18.381 10 17 10s-2.5 1.119-2.5 2.5S15.619 15 17 15zm-10 0c1.933 0 3.5 1.567 3.5 3.5S8.933 22 7 22s-3.5-1.567-3.5-3.5S5.067 15 7 15zm0 5c1.381 0 2.5-1.119 2.5-2.5S8.381 15 7 15s-2.5 1.119-2.5 2.5S5.619 20 7 20zm3-12c1.933 0 3.5 1.567 3.5 3.5S11.933 15 10 15s-3.5-1.567-3.5-3.5S8.067 8 10 8zm0 5c1.381 0 2.5-1.119 2.5-2.5S11.381 8 10 8s-2.5 1.119-2.5 2.5S8.619 13 10 13z"
+                  fill="url(#cloverGrad)"
+                  filter="url(#cloverGlow)"
                 />
               </svg>
             </div>
           </div>
 
           <p className="subtitle">
-            Você pode estar apto à negociação. Clique abaixo para consultar
+            Você pode estar apto à negociação. Clique abaixo para participar
           </p>
 
           <button
@@ -106,7 +96,7 @@ export default function Quiz() {
             aria-haspopup="dialog"
             aria-controls="modal-root"
           >
-            CONSULTAR AGORA
+            ADQUIRIR LOTERIA
           </button>
 
           <nav className="links" aria-label="links-legais">
@@ -212,7 +202,7 @@ export default function Quiz() {
         }
         body {
           margin: 0;
-          background: #fffaf4; /* fundo levemente alaranjado */
+          background: #fffaf4;
           color: #0f172a;
           font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
           -webkit-font-smoothing: antialiased;
