@@ -7,7 +7,7 @@ export default function Quiz() {
   const [step, setStep] = useState(1);
   const [cookiesOpen, setCookiesOpen] = useState(true);
 
-  // Helper para anexar os parâmetros atuais (UTM e afins) ao destino (sem mudanças)
+  // Helper UTM (sem alteração)
   const withQuery = (url) => {
     try {
       const srcQs = typeof window !== "undefined" ? window.location.search : "";
@@ -55,7 +55,6 @@ export default function Quiz() {
 
           <div className="iconWrap" aria-hidden="true">
             <div className="iconCircle">
-              {/* === Emoji no lugar do ícone === */}
               <span className="emojiClover" role="img" aria-label="Trevo de quatro folhas">
                 🍀
               </span>
@@ -166,13 +165,13 @@ export default function Quiz() {
         </div>
       )}
 
-      {/* ====== GLOBAL ====== */}
+      {/* GLOBAL (fundo azul claro) */}
       <style jsx global>{`
         html, body, #__next { height: 100%; }
         * { box-sizing: border-box; }
         body {
           margin: 0;
-          background: #fffaf4; /* fundo suave */
+          background: #e8f4ff; /* azul claro */
           color: #0f172a;
           font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
           -webkit-font-smoothing: antialiased;
@@ -185,14 +184,14 @@ export default function Quiz() {
         }
       `}</style>
 
-      {/* ====== SCOPED ====== */}
+      {/* SCOPED VISUAL */}
       <style jsx>{`
         .page {
           min-height: 100dvh;
           display: grid;
           place-items: center;
           padding: 32px 16px 96px;
-          background: #fff6eb;
+          background: #e8f4ff; /* mesmo azul claro */
         }
         .wrapper { width: 100%; display: grid; place-items: center; }
         .card {
@@ -220,12 +219,12 @@ export default function Quiz() {
           box-shadow: inset 0 1px 6px rgba(249,115,22,0.06), 0 8px 20px rgba(17,24,39,0.05);
         }
         .emojiClover {
-          font-size: 56px; /* tamanho do emoji */
+          font-size: 56px;
           line-height: 1;
           display: inline-block;
           text-shadow:
             0 1px 0 rgba(255,255,255,0.7),
-            0 6px 16px rgba(249,115,22,0.35); /* glow laranja */
+            0 6px 16px rgba(249,115,22,0.35);
           filter: saturate(1.1);
         }
 
