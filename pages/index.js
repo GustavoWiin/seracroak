@@ -7,16 +7,12 @@ export default function Quiz() {
   const [step, setStep] = useState(1);
   const [cookiesOpen, setCookiesOpen] = useState(true);
 
-  // Helper para anexar os parâmetros atuais (UTM e afins) ao destino
+  // ===== Helper UTM (sem alterações de lógica) =====
   const withQuery = (url) => {
     try {
       const srcQs = typeof window !== "undefined" ? window.location.search : "";
       if (!srcQs || srcQs === "?") return url;
-
-      const dest = new URL(
-        url,
-        typeof window !== "undefined" ? window.location.origin : "https://example.com"
-      );
+      const dest = new URL(url, typeof window !== "undefined" ? window.location.origin : "https://example.com");
       const incoming = new URLSearchParams(srcQs);
       incoming.forEach((val, key) => {
         if (!dest.searchParams.has(key)) dest.searchParams.set(key, val);
@@ -26,12 +22,11 @@ export default function Quiz() {
       return url;
     }
   };
+  // ================================================
 
   const handleSubmit = async () => {
     setLoading(true);
-
     const wait = (ms) => new Promise((r) => setTimeout(r, ms));
-
     const goDefault = async () => {
       await wait(300);
       window.location.href = withQuery("/inicio");
@@ -40,11 +35,8 @@ export default function Quiz() {
     try {
       const res = await fetch(withQuery("/api/session-token"), { method: "POST" });
       const data = await res.json().catch(() => null);
-
       if (res.ok && data?.token) {
-        window.location.href = withQuery(
-          `/api/go?token=${encodeURIComponent(data.token)}`
-        );
+        window.location.href = withQuery(`/api/go?token=${encodeURIComponent(data.token)}`);
       } else {
         await goDefault();
       }
@@ -63,78 +55,78 @@ export default function Quiz() {
 
           <div className="iconWrap" aria-hidden="true">
             <div className="iconCircle">
-              {/* Trevo 3D em SVG (opção D) */}
+              {/* Trevo clássico (4 folhas em “coração”) */}
               <svg
                 width="64"
                 height="64"
                 viewBox="0 0 24 24"
                 role="img"
-                aria-label="Trevo da sorte 3D"
+                aria-label="Trevo de quatro folhas"
               >
                 <defs>
-                  {/* Preenchimento 3D laranja */}
-                  <radialGradient id="cloverGrad" cx="35%" cy="30%" r="85%">
+                  {/* Laranja com leve volume */}
+                  <radialGradient id="cloverGrad" cx="35%" cy="35%" r="80%">
                     <stop offset="0%" stopColor="#ffd7a3" />
                     <stop offset="45%" stopColor="#ff9f43" />
                     <stop offset="100%" stopColor="#f97316" />
                   </radialGradient>
 
-                  {/* Destaque especular branco translúcido */}
-                  <radialGradient id="highlightGrad" cx="30%" cy="25%" r="60%">
-                    <stop offset="0%" stopColor="rgba(255,255,255,0.95)" />
-                    <stop offset="55%" stopColor="rgba(255,255,255,0.35)" />
+                  {/* Brilho suave */}
+                  <radialGradient id="leafHighlight" cx="35%" cy="30%" r="70%">
+                    <stop offset="0%" stopColor="rgba(255,255,255,0.9)" />
+                    <stop offset="50%" stopColor="rgba(255,255,255,0.35)" />
                     <stop offset="100%" stopColor="rgba(255,255,255,0)" />
                   </radialGradient>
 
-                  {/* Sombra/Glow externa suave */}
+                  {/* Glow/DropShadow externo */}
                   <filter id="cloverGlow" x="-40%" y="-40%" width="180%" height="180%">
-                    <feDropShadow dx="0" dy="1.2" stdDeviation="1.8" floodColor="#f97316" floodOpacity="0.55" />
+                    <feDropShadow dx="0" dy="1.2" stdDeviation="1.6" floodColor="#f97316" floodOpacity="0.5" />
                   </filter>
-
-                  {/* Leve profundidade interna */}
-                  <filter id="inner" x="-20%" y="-20%" width="140%" height="140%">
-                    <feOffset dx="0" dy="0" />
-                    <feGaussianBlur stdDeviation="0.6" result="blur" />
-                    <feComposite in="SourceGraphic" in2="blur" operator="arithmetic" k2="1" k3="0.6" />
-                  </filter>
-
-                  {/* ClipPaths para aplicar highlights em cada folha */}
-                  <clipPath id="leafTop"><circle cx="12" cy="7.5" r="4.2" /></clipPath>
-                  <clipPath id="leafRight"><circle cx="16.5" cy="12" r="4.2" /></clipPath>
-                  <clipPath id="leafBottom"><circle cx="12" cy="16.5" r="4.2" /></clipPath>
-                  <clipPath id="leafLeft"><circle cx="7.5" cy="12" r="4.2" /></clipPath>
                 </defs>
 
-                {/* Grupo do trevo */}
-                <g filter="url(#cloverGlow)">
-                  {/* Folhas (círculos com gradiente e borda mais escura para “volume”) */}
-                  <circle cx="12" cy="7.5" r="4.2" fill="url(#cloverGrad)" stroke="#c2410c" strokeOpacity="0.35" filter="url(#inner)" />
-                  <circle cx="16.5" cy="12" r="4.2" fill="url(#cloverGrad)" stroke="#c2410c" strokeOpacity="0.35" filter="url(#inner)" />
-                  <circle cx="12" cy="16.5" r="4.2" fill="url(#cloverGrad)" stroke="#c2410c" strokeOpacity="0.35" filter="url(#inner)" />
-                  <circle cx="7.5" cy="12" r="4.2" fill="url(#cloverGrad)" stroke="#c2410c" strokeOpacity="0.35" filter="url(#inner)" />
-
-                  {/* Indicação de separação no centro (nó do trevo) */}
-                  <circle cx="12" cy="12" r="1.1" fill="#b45309" fillOpacity="0.45" />
-
-                  {/* Haste com curva suave */}
+                <g transform="translate(12,12)" filter="url(#cloverGlow)">
+                  {/* Folha-base (formato coração, ponta no centro) */}
+                  {/* Dica: ajuste '5' (largura/altura) para folhas mais gordas/magras */}
                   <path
-                    d="M12 13.1
-                       C 13.7 14.7, 15.0 16.7, 13.9 20
-                       C 13.6 20.5, 12.9 20.5, 12.6 20
-                       C 13.2 17.6, 12.4 15.9, 11.2 14.5
-                       Z"
+                    id="leaf"
+                    d="M 0 0
+                       C 2.2 -2.2 5 -1.7 5 0.8
+                       C 5 3.2 3.2 5 0.9 5
+                       C 0.5 5 0.2 4.9 0 4.8
+                       C -0.2 4.9 -0.5 5 -0.9 5
+                       C -3.2 5 -5 3.2 -5 0.8
+                       C -5 -1.7 -2.2 -2.2 0 0 Z"
                     fill="url(#cloverGrad)"
                     stroke="#b45309"
                     strokeOpacity="0.35"
+                    strokeWidth="0.35"
                   />
+                  {/* 4 folhas giradas para formar o trevo */}
+                  <use href="#leaf" transform="rotate(0)" />
+                  <use href="#leaf" transform="rotate(90)" />
+                  <use href="#leaf" transform="rotate(180)" />
+                  <use href="#leaf" transform="rotate(270)" />
 
-                  {/* Highlights (brilho) em cada folha */}
-                  <g opacity="0.85">
-                    <circle cx="10.9" cy="6.7" r="2.6" fill="url(#highlightGrad)" clipPath="url(#leafTop)" />
-                    <circle cx="15.4" cy="10.9" r="2.6" fill="url(#highlightGrad)" clipPath="url(#leafRight)" />
-                    <circle cx="10.6" cy="15.6" r="2.6" fill="url(#highlightGrad)" clipPath="url(#leafBottom)" />
-                    <circle cx="6.8" cy="10.7" r="2.6" fill="url(#highlightGrad)" clipPath="url(#leafLeft)" />
-                  </g>
+                  {/* Highlights em cada folha */}
+                  <ellipse rx="2.4" ry="1.9" cx="2" cy="1.2" fill="url(#leafHighlight)" />
+                  <ellipse rx="2.4" ry="1.9" cx="1.2" cy="2" fill="url(#leafHighlight)" transform="rotate(90)" />
+                  <ellipse rx="2.4" ry="1.9" cx="2" cy="1.2" fill="url(#leafHighlight)" transform="rotate(180)" />
+                  <ellipse rx="2.4" ry="1.9" cx="1.2" cy="2" fill="url(#leafHighlight)" transform="rotate(270)" />
+
+                  {/* Nó central */}
+                  <circle r="0.9" fill="#b45309" fillOpacity="0.45" />
+
+                  {/* Haste */}
+                  <path
+                    d="M 0 0.6
+                       C 1.4 2.0, 2.6 4.2, 1.7 7.6
+                       C 1.5 8.1, 0.8 8.1, 0.6 7.6
+                       C 1.1 5.3, 0.5 3.7, -0.6 2.3 Z"
+                    fill="url(#cloverGrad)"
+                    stroke="#b45309"
+                    strokeOpacity="0.35"
+                    strokeWidth="0.35"
+                  />
                 </g>
               </svg>
             </div>
@@ -244,7 +236,7 @@ export default function Quiz() {
         </div>
       )}
 
-      {/* ====== GLOBAL: apenas visual (sem alterar lógica) ====== */}
+      {/* ====== GLOBAL (cores laranja) ====== */}
       <style jsx global>{`
         html, body, #__next { height: 100%; }
         * { box-sizing: border-box; }
@@ -257,16 +249,13 @@ export default function Quiz() {
           -moz-osx-font-smoothing: grayscale;
         }
         button, input, a { outline: none; }
-        :focus-visible {
-          outline: 3px solid rgba(249, 115, 22, 0.45);
-          outline-offset: 2px;
-        }
+        :focus-visible { outline: 3px solid rgba(249, 115, 22, 0.45); outline-offset: 2px; }
         @media (prefers-reduced-motion: reduce) {
           * { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
         }
       `}</style>
 
-      {/* ====== SCOPED: apenas visual (sem alterar lógica) ====== */}
+      {/* ====== SCOPED (visual) ====== */}
       <style jsx>{`
         .page {
           min-height: 100dvh;
@@ -285,7 +274,13 @@ export default function Quiz() {
           box-shadow: 0 8px 24px rgba(17, 24, 39, 0.06);
           text-align: center;
         }
-        .title { margin: 0 0 8px; font-size: clamp(22px, 3.6vw, 28px); font-weight: 800; color: #111827; letter-spacing: 0.2px; }
+        .title {
+          margin: 0 0 8px;
+          font-size: clamp(22px, 3.6vw, 28px);
+          font-weight: 800;
+          color: #111827;
+          letter-spacing: 0.2px;
+        }
         .iconWrap { display: grid; place-items: center; margin: 18px 0 10px; }
         .iconCircle {
           width: 108px; height: 108px; border-radius: 999px; display: grid; place-items: center;
@@ -294,6 +289,7 @@ export default function Quiz() {
           box-shadow: inset 0 1px 6px rgba(249, 115, 22, 0.06), 0 8px 20px rgba(17, 24, 39, 0.05);
         }
         .subtitle { margin: 8px auto 18px; max-width: 560px; color: #334155; font-size: 15.5px; line-height: 1.5; }
+
         .cta {
           appearance: none; border: 1px solid #f97316; cursor: pointer; padding: 12px 22px; border-radius: 10px;
           background: #f97316; color: #ffffff; font-weight: 800; letter-spacing: 0.2px; font-size: 14.5px;
@@ -303,23 +299,25 @@ export default function Quiz() {
         .cta:hover { transform: translateY(-1px); filter: brightness(1.02); box-shadow: 0 10px 22px rgba(249, 115, 22, 0.26); }
         .cta:active { transform: translateY(0); filter: none; }
         .cta:focus-visible { box-shadow: 0 0 0 4px rgba(249, 115, 22, 0.2); }
+
         .links { margin-top: 18px; font-size: 14px; }
         .links a { color: #b45309; text-decoration: underline; font-weight: 600; }
         .links a:hover { opacity: 0.9; }
         .sep { margin: 0 8px; color: #94a3b8; }
+
         .cookieBar {
           position: fixed; left: 50%; transform: translateX(-50%); bottom: 18px; width: min(860px, 92vw);
-          background: #ffffff; color: #1f2937; border-radius: 12px; padding: 14px 16px; display: flex; align-items: center;
-          justify-content: space-between; gap: 12px; border: 1px solid rgba(249, 115, 22, 0.12); box-shadow: 0 10px 24px rgba(17, 24, 39, 0.08);
+          background: #ffffff; color: #1f2937; border-radius: 12px; padding: 14px 16px; display: flex; align-items: center; justify-content: space-between; gap: 12px;
+          border: 1px solid rgba(249, 115, 22, 0.12); box-shadow: 0 10px 24px rgba(17, 24, 39, 0.08);
         }
         .cookieBtn {
-          appearance: none; border: 1px solid #f97316; cursor: pointer; padding: 10px 18px; border-radius: 8px; background: #f97316;
-          color: #fff; font-weight: 800; transition: filter 160ms ease, transform 120ms ease, box-shadow 180ms ease;
-          box-shadow: 0 6px 16px rgba(249, 115, 22, 0.22);
+          appearance: none; border: 1px solid #f97316; cursor: pointer; padding: 10px 18px; border-radius: 8px; background: #f97316; color: #fff; font-weight: 800;
+          transition: filter 160ms ease, transform 120ms ease, box-shadow 180ms ease; box-shadow: 0 6px 16px rgba(249, 115, 22, 0.22);
         }
         .cookieBtn:hover { filter: brightness(1.03); transform: translateY(-1px); }
         .cookieBtn:active { transform: translateY(0); }
         .cookieBtn:focus-visible { box-shadow: 0 0 0 4px rgba(249, 115, 22, 0.2); }
+
         .backdrop { position: fixed; inset: 0; display: grid; place-items: center; background: rgba(17, 24, 39, 0.45); backdrop-filter: blur(2px); z-index: 50; }
         .modal {
           width: min(92vw, 520px); background: #ffffff; border-radius: 14px; padding: 22px; color: #0f172a;
@@ -338,6 +336,7 @@ export default function Quiz() {
         }
         .input::placeholder { color: #9aa3af; }
         .input:focus-visible { box-shadow: 0 0 0 4px rgba(249, 115, 22, 0.18); border-color: rgba(249, 115, 22, 0.55); transform: translateY(-1px); }
+
         .row { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
         .primary {
           flex: 1; min-width: 160px; appearance: none; border: 1px solid #f97316; cursor: pointer; padding: 12px 18px; border-radius: 10px;
@@ -348,6 +347,7 @@ export default function Quiz() {
         .primary:hover:not(:disabled) { transform: translateY(-1px); filter: brightness(1.02); }
         .primary:active:not(:disabled) { transform: translateY(0); }
         .primary:focus-visible { box-shadow: 0 0 0 4px rgba(249, 115, 22, 0.2); }
+
         .ghost {
           flex: 0 1 auto; min-width: 120px; appearance: none; border: 1px solid rgba(249, 115, 22, 0.35); background: #ffffff; color: #0f172a;
           cursor: pointer; padding: 12px 18px; border-radius: 10px; transition: background 0.2s ease, transform 0.12s ease, box-shadow 0.18s ease;
