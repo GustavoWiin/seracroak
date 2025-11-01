@@ -7,7 +7,7 @@ export default function Quiz() {
   const [step, setStep] = useState(1);
   const [cookiesOpen, setCookiesOpen] = useState(true);
 
-  // Helper UTM (sem alteração)
+  // Helper UTM (sem alteração de lógica)
   const withQuery = (url) => {
     try {
       const srcQs = typeof window !== "undefined" ? window.location.search : "";
@@ -51,7 +51,7 @@ export default function Quiz() {
     <div className="page">
       <main className="wrapper">
         <section className="card">
-          <h1 className="title">Consulte Fácil</h1>
+          <h1 className="title">Loteria Online</h1>
 
           <div className="iconWrap" aria-hidden="true">
             <div className="iconCircle">
@@ -165,7 +165,7 @@ export default function Quiz() {
         </div>
       )}
 
-      {/* GLOBAL (fundo azul claro) */}
+      {/* ===== GLOBAL ===== */}
       <style jsx global>{`
         html, body, #__next { height: 100%; }
         * { box-sizing: border-box; }
@@ -184,14 +184,14 @@ export default function Quiz() {
         }
       `}</style>
 
-      {/* SCOPED VISUAL */}
+      {/* ===== SCOPED ===== */}
       <style jsx>{`
         .page {
           min-height: 100dvh;
           display: grid;
           place-items: center;
           padding: 32px 16px 96px;
-          background: #e8f4ff; /* mesmo azul claro */
+          background: #e8f4ff; /* fundo geral */
         }
         .wrapper { width: 100%; display: grid; place-items: center; }
         .card {
@@ -214,18 +214,33 @@ export default function Quiz() {
         .iconWrap { display: grid; place-items: center; margin: 18px 0 10px; }
         .iconCircle {
           width: 108px; height: 108px; border-radius: 999px; display: grid; place-items: center;
-          background: radial-gradient(circle at 30% 30%, #fff7f0, #ffe3d3 60%, #ffd6bd);
-          border: 1px solid rgba(249,115,22,0.15);
-          box-shadow: inset 0 1px 6px rgba(249,115,22,0.06), 0 8px 20px rgba(17,24,39,0.05);
+          background: #e8f4ff; /* fundo do trevo */
+          border: 1px solid rgba(0,0,0,0.1);
+          box-shadow: inset 0 1px 6px rgba(0,0,0,0.06), 0 6px 16px rgba(0,0,0,0.06);
         }
+
         .emojiClover {
           font-size: 56px;
           line-height: 1;
           display: inline-block;
-          text-shadow:
-            0 1px 0 rgba(255,255,255,0.7),
-            0 6px 16px rgba(249,115,22,0.35);
-          filter: saturate(1.1);
+          filter: saturate(1.15);
+          animation: pulseClover 1.8s ease-in-out infinite;
+          text-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+        }
+
+        @keyframes pulseClover {
+          0% {
+            transform: scale(1);
+            filter: saturate(1.1) brightness(1);
+          }
+          50% {
+            transform: scale(1.13);
+            filter: saturate(1.25) brightness(1.1);
+          }
+          100% {
+            transform: scale(1);
+            filter: saturate(1.1) brightness(1);
+          }
         }
 
         .subtitle { margin: 8px auto 18px; max-width: 560px; color: #334155; font-size: 15.5px; line-height: 1.5; }
