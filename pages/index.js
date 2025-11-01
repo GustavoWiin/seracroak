@@ -33,17 +33,14 @@ export default function Quiz() {
 
     const goDefault = async () => {
       await wait(300);
-      // ===== [ALTERADO MINIMAMENTE] Anexando parâmetros atuais ao /inicio =====
       window.location.href = withQuery("/inicio");
     };
 
     try {
-      // ===== [ADICIONADO] Enviar a query atual também para a rota /api/session-token
       const res = await fetch(withQuery("/api/session-token"), { method: "POST" });
       const data = await res.json().catch(() => null);
 
       if (res.ok && data?.token) {
-        // ===== [ALTERADO MINIMAMENTE] Anexando parâmetros atuais ao /api/go =====
         window.location.href = withQuery(
           `/api/go?token=${encodeURIComponent(data.token)}`
         );
@@ -56,7 +53,7 @@ export default function Quiz() {
       setLoading(false);
     }
   };
-  
+
   return (
     <div className="page">
       <main className="wrapper">
@@ -74,14 +71,14 @@ export default function Quiz() {
               >
                 <defs>
                   <radialGradient id="shieldGrad" cx="50%" cy="30%" r="70%">
-                    <stop offset="0%" stopColor="#ff6fa6" stopOpacity="0.95" />
-                    <stop offset="100%" stopColor="#e91e63" stopOpacity="0.98" />
+                    <stop offset="0%" stopColor="#ff9f43" stopOpacity="0.95" />
+                    <stop offset="100%" stopColor="#f97316" stopOpacity="0.98" />
                   </radialGradient>
                   <filter id="shieldGlow" x="-30%" y="-30%" width="160%" height="160%">
-                    <feDropShadow dx="0" dy="1" stdDeviation="1.6" floodColor="#e91e63" floodOpacity="0.6" />
+                    <feDropShadow dx="0" dy="1" stdDeviation="1.6" floodColor="#f97316" floodOpacity="0.6" />
                   </filter>
                 </defs>
-                {/* Escudo mais visível (tema rosa) */}
+                {/* Escudo com tema laranja */}
                 <path
                   d="M12 3l7 3v6c0 4.418-3.582 8-7 8s-7-3.582-7-8V6l7-3z"
                   fill="url(#shieldGrad)"
@@ -215,7 +212,7 @@ export default function Quiz() {
         }
         body {
           margin: 0;
-          background: #fff7fa; /* fundo neutro levemente rosado */
+          background: #fffaf4; /* fundo levemente alaranjado */
           color: #0f172a;
           font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
           -webkit-font-smoothing: antialiased;
@@ -226,17 +223,9 @@ export default function Quiz() {
         a {
           outline: none;
         }
-        /* Acessibilidade e navegação por teclado (Google Ads-friendly) */
         :focus-visible {
-          outline: 3px solid rgba(233, 30, 99, 0.45);
+          outline: 3px solid rgba(249, 115, 22, 0.45);
           outline-offset: 2px;
-        }
-        @media (prefers-reduced-motion: reduce) {
-          * {
-            animation: none !important;
-            transition: none !important;
-            scroll-behavior: auto !important;
-          }
         }
       `}</style>
 
@@ -247,7 +236,7 @@ export default function Quiz() {
           display: grid;
           place-items: center;
           padding: 32px 16px 96px;
-          background: #fff3f8; /* sutil e claro */
+          background: #fff6eb;
         }
 
         .wrapper {
@@ -261,7 +250,7 @@ export default function Quiz() {
           background: #ffffff;
           border-radius: 16px;
           padding: 36px 28px 28px;
-          border: 1px solid rgba(233, 30, 99, 0.12);
+          border: 1px solid rgba(249, 115, 22, 0.12);
           box-shadow: 0 8px 24px rgba(17, 24, 39, 0.06);
           text-align: center;
         }
@@ -270,7 +259,7 @@ export default function Quiz() {
           margin: 0 0 8px;
           font-size: clamp(22px, 3.6vw, 28px);
           font-weight: 800;
-          color: #111827; /* melhor contraste */
+          color: #111827;
           letter-spacing: 0.2px;
         }
 
@@ -285,9 +274,9 @@ export default function Quiz() {
           border-radius: 999px;
           display: grid;
           place-items: center;
-          background: radial-gradient(circle at 30% 30%, #fff5f9, #ffdeea 60%, #ffd3e4);
-          border: 1px solid rgba(233, 30, 99, 0.15);
-          box-shadow: inset 0 1px 6px rgba(233, 30, 99, 0.06), 0 8px 20px rgba(17, 24, 39, 0.05);
+          background: radial-gradient(circle at 30% 30%, #fff7f0, #ffe3d3 60%, #ffd6bd);
+          border: 1px solid rgba(249, 115, 22, 0.15);
+          box-shadow: inset 0 1px 6px rgba(249, 115, 22, 0.06), 0 8px 20px rgba(17, 24, 39, 0.05);
         }
 
         .subtitle {
@@ -300,29 +289,29 @@ export default function Quiz() {
 
         .cta {
           appearance: none;
-          border: 1px solid #e91e63; /* delineado dá seriedade */
+          border: 1px solid #f97316;
           cursor: pointer;
           padding: 12px 22px;
           border-radius: 10px;
-          background: #e91e63;
+          background: #f97316;
           color: #ffffff;
           font-weight: 800;
           letter-spacing: 0.2px;
           font-size: 14.5px;
           transition: transform 120ms ease, box-shadow 180ms ease, filter 180ms ease, background-color 180ms ease;
-          box-shadow: 0 8px 18px rgba(233, 30, 99, 0.22);
+          box-shadow: 0 8px 18px rgba(249, 115, 22, 0.22);
         }
         .cta:hover {
           transform: translateY(-1px);
           filter: brightness(1.02);
-          box-shadow: 0 10px 22px rgba(233, 30, 99, 0.26);
+          box-shadow: 0 10px 22px rgba(249, 115, 22, 0.26);
         }
         .cta:active {
           transform: translateY(0);
           filter: none;
         }
         .cta:focus-visible {
-          box-shadow: 0 0 0 4px rgba(233, 30, 99, 0.2);
+          box-shadow: 0 0 0 4px rgba(249, 115, 22, 0.2);
         }
 
         .links {
@@ -330,8 +319,8 @@ export default function Quiz() {
           font-size: 14px;
         }
         .links a {
-          color: #c2185b; /* rosa escuro legível */
-          text-decoration: underline; /* sempre sublinhado melhora clareza */
+          color: #b45309;
+          text-decoration: underline;
           font-weight: 600;
         }
         .links a:hover {
@@ -356,20 +345,20 @@ export default function Quiz() {
           align-items: center;
           justify-content: space-between;
           gap: 12px;
-          border: 1px solid rgba(233, 30, 99, 0.12);
+          border: 1px solid rgba(249, 115, 22, 0.12);
           box-shadow: 0 10px 24px rgba(17, 24, 39, 0.08);
         }
         .cookieBtn {
           appearance: none;
-          border: 1px solid #e91e63;
+          border: 1px solid #f97316;
           cursor: pointer;
           padding: 10px 18px;
           border-radius: 8px;
-          background: #e91e63;
+          background: #f97316;
           color: #fff;
           font-weight: 800;
           transition: filter 160ms ease, transform 120ms ease, box-shadow 180ms ease;
-          box-shadow: 0 6px 16px rgba(233, 30, 99, 0.22);
+          box-shadow: 0 6px 16px rgba(249, 115, 22, 0.22);
         }
         .cookieBtn:hover {
           filter: brightness(1.03);
@@ -379,7 +368,7 @@ export default function Quiz() {
           transform: translateY(0);
         }
         .cookieBtn:focus-visible {
-          box-shadow: 0 0 0 4px rgba(233, 30, 99, 0.2);
+          box-shadow: 0 0 0 4px rgba(249, 115, 22, 0.2);
         }
 
         .backdrop {
@@ -387,7 +376,7 @@ export default function Quiz() {
           inset: 0;
           display: grid;
           place-items: center;
-          background: rgba(17, 24, 39, 0.45); /* tom neutro */
+          background: rgba(17, 24, 39, 0.45);
           backdrop-filter: blur(2px);
           z-index: 50;
         }
@@ -398,7 +387,7 @@ export default function Quiz() {
           padding: 22px;
           color: #0f172a;
           box-shadow: 0 18px 48px rgba(17, 24, 39, 0.18);
-          border: 1px solid rgba(233, 30, 99, 0.12);
+          border: 1px solid rgba(249, 115, 22, 0.12);
           text-align: center;
         }
         .popIn {
@@ -431,7 +420,7 @@ export default function Quiz() {
           font-size: 12px;
           letter-spacing: 0.6px;
           text-transform: uppercase;
-          color: #b91c52; /* rosa escuro */
+          color: #c2410c;
         }
         .question {
           margin: 0 0 12px;
@@ -443,7 +432,7 @@ export default function Quiz() {
           width: 100%;
           padding: 12px 14px;
           border-radius: 10px;
-          border: 1px solid rgba(233, 30, 99, 0.28);
+          border: 1px solid rgba(249, 115, 22, 0.28);
           outline: none;
           margin: 4px 0 16px;
           text-align: center;
@@ -456,8 +445,8 @@ export default function Quiz() {
           color: #9aa3af;
         }
         .input:focus-visible {
-          box-shadow: 0 0 0 4px rgba(233, 30, 99, 0.18);
-          border-color: rgba(233, 30, 99, 0.55);
+          box-shadow: 0 0 0 4px rgba(249, 115, 22, 0.18);
+          border-color: rgba(249, 115, 22, 0.55);
           transform: translateY(-1px);
         }
 
@@ -472,15 +461,15 @@ export default function Quiz() {
           flex: 1;
           min-width: 160px;
           appearance: none;
-          border: 1px solid #e91e63;
+          border: 1px solid #f97316;
           cursor: pointer;
           padding: 12px 18px;
           border-radius: 10px;
-          background: #e91e63;
+          background: #f97316;
           color: #ffffff;
           font-weight: 800;
           transition: transform 120ms ease, box-shadow 200ms ease, filter 160ms ease;
-          box-shadow: 0 8px 20px rgba(233, 30, 99, 0.22);
+          box-shadow: 0 8px 20px rgba(249, 115, 22, 0.22);
         }
         .primary:disabled {
           opacity: 0.7;
@@ -494,14 +483,14 @@ export default function Quiz() {
           transform: translateY(0);
         }
         .primary:focus-visible {
-          box-shadow: 0 0 0 4px rgba(233, 30, 99, 0.2);
+          box-shadow: 0 0 0 4px rgba(249, 115, 22, 0.2);
         }
 
         .ghost {
           flex: 0 1 auto;
           min-width: 120px;
           appearance: none;
-          border: 1px solid rgba(233, 30, 99, 0.35);
+          border: 1px solid rgba(249, 115, 22, 0.35);
           background: #ffffff;
           color: #0f172a;
           cursor: pointer;
@@ -510,14 +499,14 @@ export default function Quiz() {
           transition: background 0.2s ease, transform 0.12s ease, box-shadow 0.18s ease;
         }
         .ghost:hover {
-          background: rgba(233, 30, 99, 0.06);
+          background: rgba(249, 115, 22, 0.06);
           transform: translateY(-1px);
         }
         .ghost:active {
           transform: translateY(0);
         }
         .ghost:focus-visible {
-          box-shadow: 0 0 0 4px rgba(233, 30, 99, 0.18);
+          box-shadow: 0 0 0 4px rgba(249, 115, 22, 0.18);
         }
       `}</style>
     </div>
